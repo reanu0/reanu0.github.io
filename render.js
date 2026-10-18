@@ -160,15 +160,17 @@ function renderProjects() {
       ? `<div class="embeds">${p.embeds.map((url, i) =>
           `<iframe src="${esc(url)}" title="${esc(p.title)} on itch.io, ${i + 1}" width="552" height="167" loading="lazy"></iframe>`).join('')}</div>`
       : '';
+    const buttons = [p.link].concat(p.links || []).filter(Boolean);
+    const media = (gallery || embeds) ? `<div class="project-media">${gallery}${embeds}</div>` : '';
     return `
       <article id="${esc(p.id)}" class="project">
         <div class="project-text">
           ${p.eyebrow ? `<p class="eyebrow">${esc(p.eyebrow)}</p>` : ''}
           <h3>${esc(p.title)}</h3>
           ${p.text ? `<p>${esc(p.text)}</p>` : ''}
-          ${linkButton(p.link)}
+          ${buttons.length ? `<div class="project-buttons">${buttons.map(b => linkButton(b)).join('')}</div>` : ''}
         </div>
-        ${gallery}${embeds}
+        ${media}
       </article>`;
   }).join('');
 }

@@ -107,6 +107,7 @@ const LIST_ORDER = ["Design", "3D", "Electronics", "Code", "Art"];
    videos:      (optional) video files in the images folder, e.g. ["demo.mp4"]
    fit:         (optional) "whole" shows images uncropped (posters, comics, tall photos)
    link:        (optional) a button, e.g. { label: "Read it ↗", url: "https://..." }
+   links:       (optional) several buttons, e.g. [{ label: "Play ↗", url: "https://..." }, …]
    embeds:      (optional) itch.io embed links, e.g. ["https://itch.io/embed/4233002"]
    hidden:      (optional) true hides the project without deleting it        */
 
@@ -163,11 +164,11 @@ const PROJECTS = [
     list: "3D",
     tag: "Unity",
     eyebrow: "Module 2 · Interactive Visualisation",
-    text: "My Blender models brought into Unity: a Da Vinci tank in a desert landscape, and the Japanese house placed in a mountain valley. Play them below.",
+    text: "My Blender models brought into Unity: a Da Vinci tank in a desert landscape, and the Japanese house placed in a mountain valley. Both run in your browser on itch.io.",
     images: 6,
-    embeds: [
-      "https://itch.io/embed/4233002",
-      "https://itch.io/embed/4217245",
+    links: [
+      { label: "Play the Da Vinci tank ↗", url: "https://reanu0.itch.io/evil-davinci-tank" },
+      { label: "Explore the Japanese house ↗", url: "https://reanu0.itch.io/so4reanu" },
     ],
   },
   {
