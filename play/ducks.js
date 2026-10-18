@@ -1,5 +1,5 @@
 // REANU TARIN ALI - 3649660
-// La_Creatura.pde, ported from Processing to p5.js so it runs in the browser.
+// La_Creatura.pde, ported from Processing to p5.js with Claude Opus 5.5 (AI) so it runs in the browser.
 // The logic is unchanged; only the Java syntax became JavaScript.
 // CLICK ON A DUCK TO MAKE IT MOVE ABOUT FOR 5 SECONDS
 // DRAG A DUCK AROUND. THEY DONT MIND
@@ -58,16 +58,30 @@ class Duck {
   }
 }
 
+// one duck with random values, like the original setup loop
+function makeDuck() {
+  const x = random(160, width - 160); // random position, but will remain onscreen
+  const y = random(160, height - 160);
+  const scale = random(80, 240); // random size
+  const col = color(random(200, 255), random(200, 255), random(200, 255)); // presentable colours
+  return new Duck(x, y, scale, col);
+}
+
 function setup() {
   createCanvas(1000, 750).parent('stage');
   strokeWeight(1);
-  for (let i = 0; i < 12; i = i + 1) { // 12 ducks
-    const x = random(160, width - 160);
-    const y = random(160, height - 160);
-    const scale = random(80, 240);
-    const col = color(random(200, 255), random(200, 255), random(200, 255));
-    ducks.push(new Duck(x, y, scale, col));
-  }
+  for (let i = 0; i < 12; i = i + 1) ducks.push(makeDuck()); // 12 ducks
+
+  // New on the web: a slider to change how many ducks there are
+  const slider = document.getElementById('duck-slider');
+  const number = document.getElementById('duck-number');
+  slider.addEventListener('input', () => {
+    const wanted = Number(slider.value);
+    while (ducks.length < wanted) ducks.push(makeDuck());
+    while (ducks.length > wanted) ducks.pop();
+    if (duckIsDraggingIndex >= ducks.length) duckIsDraggingIndex = -1;
+    number.value = wanted;
+  });
 }
 
 // method for background
@@ -122,7 +136,13 @@ function draw() {
 let duckIsDraggingIndex = -1;
 let movedSincePress = false; // Processing only "clicks" when the mouse didn't move
 
-function mousePressed() {
+// true when the press started on the sketch itself (not on the slider)
+let pressOnCanvas = false;
+function onCanvas(e) { return !!e && e.target && e.target.tagName === 'CANVAS'; }
+
+function mousePressed(e) {
+  pressOnCanvas = onCanvas(e);
+  if (!pressOnCanvas) return; // let the slider work normally
   movedSincePress = false;
   duckIsDraggingIndex = -1;
   for (let i = ducks.length - 1; i >= 0; i = i - 1) {
@@ -135,6 +155,7 @@ function mousePressed() {
 }
 
 function mouseDragged() {
+  if (!pressOnCanvas) return;
   movedSincePress = true;
   if (duckIsDraggingIndex >= 0) {
     const dk = ducks[duckIsDraggingIndex];
@@ -145,6 +166,8 @@ function mouseDragged() {
 }
 
 function mouseReleased() {
+  if (!pressOnCanvas) return;
+  pressOnCanvas = false;
   duckIsDraggingIndex = -1;
   if (!movedSincePress) duckClicked();
   return false;

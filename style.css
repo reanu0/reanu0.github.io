@@ -419,6 +419,12 @@ figure.missing::after {
   display: block;
 }
 
+.game-note {
+  margin: -4px 0 4px;
+  font-size: 13px;
+  color: var(--grey);
+}
+
 /* Lightbox */
 .lightbox {
   width: 100vw;

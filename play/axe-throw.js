@@ -1,5 +1,5 @@
 // Axe Throw  Final Project Teo Peeters s3382451 & Reanu Ali 3649660
-// Ported from Processing to p5.js so it runs in the browser.
+// Ported from Processing to p5.js with Claude Opus 5.5 (AI) so it runs in the browser.
 // Each section below was its own tab (.pde file); the logic is unchanged.
 
 /*

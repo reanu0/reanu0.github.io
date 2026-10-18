@@ -293,7 +293,7 @@ const PROJECTS = [
       src: "play/ducks.html",
       ratio: "4 / 3",
       poster: "creature-play.jpg",
-      hint: "Click a duck to send it swimming, or drag it around.",
+      hint: "Click a duck to send it swimming, drag it around, or use the slider to add more ducks.",
     },
     link: { label: "See the code ↗", url: "https://pastebin.com/GfAx2LA0" },
   },

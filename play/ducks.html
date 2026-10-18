@@ -5,13 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Processing ducks · Reanu Ali</title>
   <link rel="stylesheet" href="play.css">
-  <style>:root { --r: 1.3333; }</style>
+  <style>
+    :root { --r: 1.3333; }
+    .duck-count {
+      position: absolute; top: 12px; left: 12px; z-index: 1;
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 14px; border-radius: 999px;
+      background: rgba(255, 255, 255, .85);
+      font: 500 13px/1 system-ui, sans-serif; color: #1A1B1F;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, .12);
+    }
+    .duck-count input { width: 120px; accent-color: #1A1B1F; cursor: pointer; }
+    .duck-count output { min-width: 2ch; text-align: right; font-variant-numeric: tabular-nums; }
+  </style>
   <!-- p5.js runs Processing-style sketches in the browser -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
   <script src="compat.js"></script>
 </head>
 <body>
-  <main id="stage"></main>
+  <main id="stage">
+    <div class="duck-count">
+      <label for="duck-slider">Ducks</label>
+      <input id="duck-slider" type="range" min="1" max="60" value="12">
+      <output id="duck-number" for="duck-slider">12</output>
+    </div>
+  </main>
   <script src="ducks.js"></script>
 </body>
 </html>

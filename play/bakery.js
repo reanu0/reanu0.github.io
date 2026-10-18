@@ -1,5 +1,5 @@
 // Bakery game, final project for Introduction to Programming.
-// Ported from Processing to p5.js so it runs in the browser. Each class below
+// Ported from Processing to p5.js with Claude Opus 5.5 (AI) so it runs in the browser. Each class below
 // was its own tab (.pde file) in the original sketch; the logic is unchanged.
 
 /* ===== bakery_assignment.pde ===== */

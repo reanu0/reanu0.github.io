@@ -1,7 +1,7 @@
 /*
   TARGET HIT GAME - Two Player Competitive Game
   ================================================
-  Ported from Processing to p5.js so it runs in the browser.
+  Ported from Processing to p5.js with Claude Opus 5.5 (AI) so it runs in the browser.
   Player 1: Places targets on screen using potentiometer (X) and LDR (Y)
   Player 2: Tries to hit all targets as fast as possible using same controls
 

@@ -190,7 +190,8 @@ function gameBlock(p) {
         </button>
         ${g.hint ? `<p class="game-hint">${esc(g.hint)}</p>` : ''}
       </div>
-    </div>`;
+    </div>
+    <p class="game-note">Ported from Processing to the browser with Claude Opus 5.5 (AI). The original game logic was kept as written.</p>`;
 }
 
 function startGame(box) {
