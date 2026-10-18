@@ -3,8 +3,6 @@ uses <id>-1.jpg to <id>-4.jpg; a project with a list uses those exact names.
 Any image that is missing shows up on the page as a grey box with its file name.
 
 Still missing (add these yourself):
-  portrait.jpg                  black and white is applied automatically
-  prodaccie-1.jpg ... prodaccie-6.jpg
   older-1.jpg ... older-7.jpg
   doodles-1.jpg ... doodles-8.jpg
 
