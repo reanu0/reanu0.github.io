@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New project entry</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Styles only for this helper page */
+    .tool { max-width: 1120px; margin: 0 auto; padding: 48px 24px 80px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+    @media (max-width: 900px) { .tool { grid-template-columns: minmax(0, 1fr); } }
+    .tool h1 { margin: 0 0 8px; font-size: 36px; letter-spacing: -0.03em; }
+    .intro { margin: 0 0 28px; color: var(--muted); }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+    .field label { font-size: 14px; font-weight: 600; }
+    .field small { color: var(--soft); font-size: 13px; }
+    .field input, .field textarea, .field select { font: inherit; padding: 12px 14px; border-radius: 12px; border: 1px solid #E2E2E4; background: #FFFFFF; color: var(--ink); }
+    .row-2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 16px; }
+    .check { display: flex; gap: 10px; align-items: center; font-size: 15px; }
+    .output { position: sticky; top: 24px; background: var(--card); border-radius: var(--radius-big); padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+    .output h2 { margin: 0; font-size: 22px; }
+    .output ol { margin: 0; padding-left: 20px; color: var(--muted); font-size: 15px; }
+    .output textarea { font-family: var(--mono); font-size: 13px; line-height: 1.5; min-height: 360px; padding: 16px; border-radius: 12px; border: 1px solid #E2E2E4; background: #FFFFFF; color: var(--ink); resize: vertical; }
+    .warn { margin: 0; padding: 10px 14px; border-radius: 10px; background: #FFF1E6; color: #8A3B00; font-size: 14px; }
+    .status { font-size: 14px; color: var(--soft); min-height: 1.5em; margin: 0; }
+  </style>
+</head>
+<body>
+
+<main class="tool">
+  <section>
+    <h1>New project entry</h1>
+    <p class="intro">Fill this in and copy the result into the PROJECTS list in content.js. Nothing is saved or sent anywhere. This page only writes the text for you.</p>
+
+    <form id="entry" autocomplete="off">
+      <div class="field">
+        <label for="title">Title</label>
+        <input id="title" type="text" placeholder="Smart plant pot">
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="shortTitle">Short title <small>(optional)</small></label>
+          <input id="shortTitle" type="text" placeholder="Plant pot">
+          <small>Used in the lists at the top</small>
+        </div>
+        <div class="field">
+          <label for="id">ID</label>
+          <input id="id" type="text" placeholder="smart-plant-pot">
+          <small>Made from the title. Also the start of image names.</small>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="list">List</label>
+          <input id="list" type="text" list="list-names" placeholder="Projects">
+          <datalist id="list-names"></datalist>
+          <small>A new name makes a new column</small>
+        </div>
+        <div class="field">
+          <label for="tag">Tag</label>
+          <input id="tag" type="text" placeholder="Electronics">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="eyebrow">Label above the title</label>
+        <input id="eyebrow" type="text" placeholder="2026 · Arduino · Module 5">
+      </div>
+
+      <div class="field">
+        <label for="text">Description</label>
+        <textarea id="text" rows="5" placeholder="What it is, what you did, what you learned."></textarea>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="imageCount">Number of images</label>
+          <input id="imageCount" type="number" min="0" max="40" value="0">
+          <small id="imageHint">Name them id-1.jpg, id-2.jpg …</small>
+        </div>
+        <div class="field">
+          <label for="imageNames">Or exact file names <small>(optional)</small></label>
+          <textarea id="imageNames" rows="3" placeholder="one per line, e.g. pot-front.png"></textarea>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="linkLabel">Button text <small>(optional)</small></label>
+          <input id="linkLabel" type="text" placeholder="See the code ↗">
+        </div>
+        <div class="field">
+          <label for="linkUrl">Button link</label>
+          <input id="linkUrl" type="url" placeholder="https://…">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="embeds">itch.io embed links <small>(optional, one per line)</small></label>
+        <textarea id="embeds" rows="2" placeholder="https://itch.io/embed/1234567"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="videos">Video files <small>(optional, one per line, put them in the images folder)</small></label>
+        <textarea id="videos" rows="2" placeholder="demo.mp4"></textarea>
+      </div>
+
+      <label class="check"><input id="whole" type="checkbox"> Show images uncropped (posters, comics, tall photos)</label>
+      <label class="check"><input id="hidden" type="checkbox"> Hide this project for now</label>
+    </form>
+  </section>
+
+  <aside class="output" aria-live="polite">
+    <h2>Your entry</h2>
+    <ol>
+      <li>Copy the text below.</li>
+      <li>Open content.js and find <code>const PROJECTS = [</code>.</li>
+      <li>Paste it on a new line, where you want it to appear in the list.</li>
+      <li>Put the images in the images folder and refresh your site.</li>
+    </ol>
+    <p id="warning" class="warn" hidden></p>
+    <textarea id="result" readonly aria-label="Generated project entry"></textarea>
+    <button id="copy" class="pill" type="button">Copy entry</button>
+    <p id="status" class="status"></p>
+  </aside>
+</main>
+
+<!-- Loads your current projects, to suggest list names and catch duplicate IDs -->
+<script src="content.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  let idEdited = false;
+
+  // Existing list names and IDs from content.js (if it loaded)
+  const existing = (typeof PROJECTS !== 'undefined') ? PROJECTS : [];
+  const listNames = [...new Set(existing.map(p => p.list).filter(Boolean))];
+  $('list-names').innerHTML = listNames.map(n => `<option value="${n}"></option>`).join('');
+
+  // "Smart plant pot!" -> "smart-plant-pot"
+  function slug(text) {
+    return text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+
+  // Writes a value as a safe JavaScript string
+  const str = value => JSON.stringify(value);
+  const lines = value => value.split('\n').map(s => s.trim()).filter(Boolean);
+
+  function build() {
+    if (!idEdited) $('id').value = slug($('title').value);
+    const id = slug($('id').value) || 'new-project';
+    $('imageHint').textContent = `Name them ${id}-1.jpg, ${id}-2.jpg …`;
+
+    const out = ['  {'];
+    out.push(`    id: ${str(id)},`);
+    out.push(`    title: ${str($('title').value.trim())},`);
+    if ($('shortTitle').value.trim()) out.push(`    shortTitle: ${str($('shortTitle').value.trim())},`);
+    out.push(`    list: ${str($('list').value.trim() || 'Projects')},`);
+    out.push(`    tag: ${str($('tag').value.trim())},`);
+    out.push(`    eyebrow: ${str($('eyebrow').value.trim())},`);
+    out.push(`    text: ${str($('text').value.trim().replace(/\s*\n\s*/g, ' '))},`);
+
+    const names = lines($('imageNames').value);
+    const count = parseInt($('imageCount').value, 10) || 0;
+    if (names.length) out.push(`    images: [${names.map(str).join(', ')}],`);
+    else if (count > 0) out.push(`    images: ${count},`);
+
+    const videos = lines($('videos').value);
+    if (videos.length) out.push(`    videos: [${videos.map(str).join(', ')}],`);
+    if ($('whole').checked) out.push('    fit: "whole",');
+
+    if ($('linkUrl').value.trim()) {
+      out.push(`    link: { label: ${str($('linkLabel').value.trim() || 'Open ↗')}, url: ${str($('linkUrl').value.trim())} },`);
+    }
+    const embeds = lines($('embeds').value);
+    if (embeds.length) out.push(`    embeds: [${embeds.map(str).join(', ')}],`);
+    if ($('hidden').checked) out.push('    hidden: true,');
+    out.push('  },');
+    $('result').value = out.join('\n');
+
+    // Warnings
+    const warnings = [];
+    if (existing.some(p => p.id === id)) warnings.push(`A project with the ID "${id}" already exists. Pick another ID.`);
+    if (!$('title').value.trim()) warnings.push('Add a title.');
+    $('warning').textContent = warnings.join(' ');
+    $('warning').hidden = warnings.length === 0;
+  }
+
+  $('id').addEventListener('input', () => { idEdited = $('id').value.trim() !== ''; });
+  $('entry').addEventListener('input', build);
+  $('entry').addEventListener('submit', e => e.preventDefault());
+
+  $('copy').addEventListener('click', () => {
+    const box = $('result');
+    const done = () => { $('status').textContent = 'Copied. Paste it into PROJECTS in content.js.'; };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(box.value).then(done).catch(() => { box.select(); document.execCommand('copy'); done(); });
+    } else {
+      box.select(); document.execCommand('copy'); done();
+    }
+  });
+
+  build();
+</script>
+</body>
+</html>

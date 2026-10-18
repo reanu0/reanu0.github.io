@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reanu Ali</title>
+  <meta name="description" content="Portfolio of Reanu Ali, a Creative Technology student at the University of Twente. Design, 3D, electronics and code.">
+
+  <!-- Font: Geist and Geist Mono from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+
+  <!-- All the styling lives in style.css -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!--
+  Your projects, highlights and showcase cards are NOT written in this file.
+  They live in content.js, and render.js builds them into the empty
+  sections below. Edit this file only for the hero, contact and footer.
+-->
+
+<!-- ============ HEADER ============ -->
+<header class="site-header wrap">
+  <a class="brand" href="#top">Reanu Ali</a>
+  <nav aria-label="Main">
+    <a href="#highlights">Highlights</a>
+    <a href="#work">Work</a>
+    <a href="https://www.linkedin.com/in/reanu/">LinkedIn</a>
+    <a class="pill pill-small" href="#contact">Get in touch</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero wrap">
+    <h1>Reanu Ali is a Creative Technology student at the University of Twente.</h1>
+    <p class="subline">Design, 3D, electronics and code. Based in Enschede.</p>
+    <div class="socials">
+      <a href="https://www.linkedin.com/in/reanu/" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>
+      </a>
+      <a href="mailto:boneheroec@gmail.com" aria-label="Email">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 7l9 6 9-6"/></svg>
+      </a>
+      <a href="#unity" aria-label="Play my Unity projects">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="5"/><path d="M8 11v3M6.5 12.5h3M15 12h.01M17 13.5h.01"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ PORTRAIT + HIGHLIGHTS ============ -->
+  <div class="wrap">
+    <figure class="portrait" data-file="images/portrait.jpg">
+      <img src="images/portrait.jpg" alt="Portrait of Reanu Ali">
+    </figure>
+    <!-- Filled from HIGHLIGHTS in content.js -->
+    <section id="highlights" class="highlights" aria-label="Highlights"></section>
+  </div>
+
+  <!-- ============ FEATURED WORK ============ -->
+  <!-- Filled from FEATURED in content.js -->
+  <section id="work" class="work wrap" aria-label="Featured work"></section>
+
+  <!-- ============ PROJECT LISTS ============ -->
+  <!-- Filled from PROJECTS in content.js (grouped by their "list" field) -->
+  <section id="lists" class="lists wrap" aria-label="All projects"></section>
+
+  <!-- ============ ALL WORK ============ -->
+  <section id="all-work" class="all-work wrap">
+    <h2>All work</h2>
+    <!-- Filled from PROJECTS in content.js -->
+    <div id="project-list"></div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <!-- A static site can't send form data by itself. This form uses Formspree (free):
+       make an account at formspree.io, create a form, and replace YOUR_FORM_ID below. -->
+  <div class="wrap">
+    <section id="contact" class="contact">
+      <h2>Want to get in touch? Drop me a line.</h2>
+      <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+
+        <button class="pill" type="submit">Send message</button>
+      </form>
+      <p class="contact-alt">Or email me directly at <a href="mailto:boneheroec@gmail.com">boneheroec@gmail.com</a></p>
+    </section>
+  </div>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer wrap">
+  <span class="mono">Reanu Ali · Enschede · 2026</span>
+  <span class="footer-links">
+    <a href="https://www.linkedin.com/in/reanu/">LinkedIn</a>
+    <a href="mailto:boneheroec@gmail.com">Email</a>
+    <a href="cv.pdf">CV (PDF)</a>
+  </span>
+</footer>
+
+<!-- Content first, then the script that builds the page from it -->
+<script src="content.js"></script>
+<script src="render.js"></script>
+
+</body>
+</html>
