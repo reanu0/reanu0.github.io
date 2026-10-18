@@ -24,7 +24,7 @@ let ledState = -1;
 const player1Id = 1;
 const player2Id = 2;
 
-const totalRounds = 2;
+const totalRounds = 5; // 5 rounds, as on the start screen and in the report
 const targetsPerPhase = 5;
 const playerSize = 30;
 const targetSize = 25;
