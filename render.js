@@ -213,8 +213,9 @@ document.addEventListener('click', e => {
    Every image keeps its own shape. Images are grouped into rows that fill
    the full width, and every image in a row gets the same height.        */
 function layoutGallery(gallery) {
-  const width = gallery.clientWidth;
-  if (!width) return;
+  // real (sub-pixel) width, minus 1px so rounding never pushes an image to the next line
+  const width = gallery.getBoundingClientRect().width - 1;
+  if (width <= 0) return;
   const figures = [...gallery.children];
   const gap = 12;
   const ratioOf = f => parseFloat(f.dataset.ratio) || 4 / 3;
