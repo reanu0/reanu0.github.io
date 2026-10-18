@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Target Hit · Reanu Ali</title>
+  <link rel="stylesheet" href="play.css">
+  <style>
+    :root { --r: 1.4286; }
+    .connect {
+      position: absolute; top: 12px; right: 12px;
+      font: 500 13px/1 system-ui, sans-serif;
+      padding: 9px 14px; border: 0; border-radius: 999px;
+      background: #0A0A0B; color: #fff; cursor: pointer;
+    }
+    .connect:disabled { background: #2E7D32; cursor: default; }
+  </style>
+  <!-- p5.js runs Processing-style sketches in the browser -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+  <script src="compat.js"></script>
+</head>
+<body>
+  <main id="stage"></main>
+  <script src="target.js"></script>
+</body>
+</html>

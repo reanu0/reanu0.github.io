@@ -105,7 +105,11 @@ const LIST_ORDER = ["Design", "3D", "Electronics", "Code", "Art"];
    images:      a number, e.g. 4, means images/<id>-1.jpg to images/<id>-4.jpg
                 or a list of file names, e.g. ["poster-1.jpg", "poster-2.png"]
    videos:      (optional) video files in the images folder, e.g. ["demo.mp4"]
-   fit:         (optional) "whole" shows images uncropped (posters, comics, tall photos)
+   fit:         (no longer needed) images are never cropped now; they are
+                arranged in neat rows automatically. Click one to see it big.
+   play:        (optional) a game that runs on the page, from the play folder, e.g.
+                { src: "play/ducks.html", ratio: "4 / 3", poster: "creature-play.jpg",
+                  hint: "Click a duck" }   ratio = the sketch's width / height
    link:        (optional) a button, e.g. { label: "Read it ↗", url: "https://..." }
    links:       (optional) several buttons, e.g. [{ label: "Play ↗", url: "https://..." }, …]
    embeds:      (optional) itch.io embed links, e.g. ["https://itch.io/embed/4233002"]
@@ -125,7 +129,7 @@ const PROJECTS = [
     images: [
       "rijkswaterstaat-concept.jpg",
       "rijkswaterstaat-1.jpg", "rijkswaterstaat-2.jpg", "rijkswaterstaat-3.jpg", "rijkswaterstaat-4.jpg",
-      "rijkswaterstaat-5.jpg", "rijkswaterstaat-6.jpg", "rijkswaterstaat-7.jpg",
+      "rijkswaterstaat-5.jpg", "rijkswaterstaat-6.jpg",
     ],
   },
   {
@@ -233,8 +237,14 @@ const PROJECTS = [
     list: "Electronics",
     tag: "Arduino",
     eyebrow: "Module 2 · Physical computing",
-    text: "A two-player game with physical controls. Player one hides five targets on the screen, steering with a potentiometer (left and right) and a light sensor (up and down). Player two then races to hit them all with the same controls, and the fastest times go on a high-score list. The game is written in Processing and reads the sensors from an Arduino over serial.",
+    text: "A two-player game with physical controls. Player one hides five targets on the screen, steering with a potentiometer (left and right) and a light sensor (up and down). Player two then races to hit them all with the same controls, and the fastest times go on a high-score list. The game is written in Processing and reads the sensors from an Arduino over serial. You can try it below with the keyboard, or plug in the Arduino and connect it in Chrome.",
     images: 1,
+    play: {
+      src: "play/target.html",
+      ratio: "10 / 7",
+      poster: "target-game-play.jpg",
+      hint: "Keyboard needed. Player 1: WASD and click to place targets. Player 2: IJKL and hold F to hit.",
+    },
     fit: "whole",
   },
 
@@ -245,8 +255,14 @@ const PROJECTS = [
     list: "Code",
     tag: "Game",
     eyebrow: "Module 4 · Algorithms for Creative Technology",
-    text: "A Processing game made with Teo Peeters, where you launch weapons from a catapult at a target. I drew the pixel-art sprites (the catapult, the target, the weapons and the background) and painted concept art for the sword and the axe.",
+    text: "A Processing game made with Teo Peeters, where you launch weapons from a catapult at a target. I drew the pixel-art sprites (the catapult, the target, the weapons and the background) and painted concept art for the sword and the axe. Daggers need to land blade first, the heavy axe is picky, and the shuriken always sticks.",
     images: 3,
+    play: {
+      src: "play/axe-throw.html",
+      ratio: "16 / 9",
+      poster: "axe-throw-play.jpg",
+      hint: "Drag away from the catapult and let go to throw. Space switches the weather.",
+    },
     fit: "whole",
   },
   {
@@ -255,8 +271,14 @@ const PROJECTS = [
     list: "Code",
     tag: "Processing",
     eyebrow: "Module 1 · Introduction to Programming final project",
-    text: "My final project for Introduction to Programming: a bakery game in Processing, made for a shop window. Bread comes out of a pipe onto a conveyor belt every few seconds, and you drag each loaf into the basket or the bin. Score pop-ups and a price tracker keep count. The sketch is my mockup of the game for the shop window.",
+    text: "My final project for Introduction to Programming: a bakery game in Processing, made for a shop window. Bread comes out of a pipe onto a conveyor belt every few seconds, and you drag each loaf into the basket or the bin. Score pop-ups and a price tracker keep count. Play it right here; the sketch below is my mockup of the game in the shop window.",
     images: 1,
+    play: {
+      src: "play/bakery.html",
+      ratio: "4 / 3",
+      poster: "bakery-play.jpg",
+      hint: "Drag each loaf into the basket, or into the bin. Watch out for ducks.",
+    },
     fit: "whole",
   },
   {
@@ -266,7 +288,13 @@ const PROJECTS = [
     list: "Code",
     tag: "Processing",
     eyebrow: "Module 1 · Processing",
-    text: "For my first programming assignment, I made a duck in Processing. Click on the ducks to make them move. They also bob gently up and down.",
+    text: "For my first programming assignment, I made a duck in Processing. Click on the ducks to make them move. They also bob gently up and down, and you can drag them around.",
+    play: {
+      src: "play/ducks.html",
+      ratio: "4 / 3",
+      poster: "creature-play.jpg",
+      hint: "Click a duck to send it swimming, or drag it around.",
+    },
     link: { label: "See the code ↗", url: "https://pastebin.com/GfAx2LA0" },
   },
 

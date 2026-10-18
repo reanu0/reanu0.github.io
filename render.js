@@ -44,7 +44,7 @@ function figure(file, alt, className = '') {
   const path = `images/${file}`;
   return `
     <figure class="${className}" data-file="${esc(path)}">
-      <img src="${esc(path)}" alt="${esc(alt)}" loading="lazy">
+      <img src="${esc(path)}" alt="${esc(alt)}" loading="lazy"${className ? '' : ' tabindex="0"'}>
     </figure>`;
 }
 
@@ -146,22 +146,21 @@ function renderProjects() {
     const files = imageList(p);
     const videos = Array.isArray(p.videos) ? p.videos : [];
     const count = files.length + videos.length;
-    let galleryClass = count === 1 ? 'gallery gallery-1'
-      : (count === 2 || count === 4) ? 'gallery gallery-2'
-      : 'gallery';
-    if (p.fit === 'whole') galleryClass += ' gallery-whole';   // show whole images, no cropping
+    // Images keep their own shape; layoutGalleries() arranges them in even rows
     const items = files.map((f, i) => figure(f, `${p.title}, image ${i + 1}`))
       .concat(videos.map((v, i) => `
         <figure class="video">
           <video src="images/${esc(v)}" controls muted playsinline preload="metadata" aria-label="${esc(p.title)}, video ${i + 1}"></video>
         </figure>`));
-    const gallery = count ? `<div class="${galleryClass}">${items.join('')}</div>` : '';
+    const gallery = count ? `<div class="gallery${count === 1 ? ' gallery-1' : ''}">${items.join('')}</div>` : '';
+    const game = gameBlock(p);
     const embeds = (p.embeds || []).length
       ? `<div class="embeds">${p.embeds.map((url, i) =>
           `<iframe src="${esc(url)}" title="${esc(p.title)} on itch.io, ${i + 1}" width="552" height="167" loading="lazy"></iframe>`).join('')}</div>`
       : '';
     const buttons = [p.link].concat(p.links || []).filter(Boolean);
-    const media = (gallery || embeds) ? `<div class="project-media">${gallery}${embeds}</div>` : '';
+    if (p.play && p.play.src) buttons.push({ label: 'Play full screen ↗', url: p.play.src });
+    const media = (game || gallery || embeds) ? `<div class="project-media">${game}${gallery}${embeds}</div>` : '';
     return `
       <article id="${esc(p.id)}" class="project">
         <div class="project-text">
@@ -173,6 +172,179 @@ function renderProjects() {
         ${media}
       </article>`;
   }).join('');
+}
+
+// A game from the play folder: shows a cover with a Play button,
+// and only loads the game when someone presses it.
+function gameBlock(p) {
+  const g = p.play;
+  if (!g || !g.src) return '';
+  const ratio = String(g.ratio || '4 / 3').replace(/[^0-9./ ]/g, '');
+  const cover = g.poster ? ` style="background-image:url('images/${esc(g.poster)}')"` : '';
+  return `
+    <div class="game" style="aspect-ratio:${ratio}" data-src="${esc(g.src)}" data-title="${esc(p.title)}">
+      <div class="game-cover"${cover}>
+        <button type="button" class="pill game-start">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+          Play in your browser
+        </button>
+        ${g.hint ? `<p class="game-hint">${esc(g.hint)}</p>` : ''}
+      </div>
+    </div>`;
+}
+
+function startGame(box) {
+  const frame = document.createElement('iframe');
+  frame.src = box.dataset.src;
+  frame.title = `${box.dataset.title}, playable`;
+  frame.allow = 'serial; fullscreen';
+  box.replaceChildren(frame);
+  box.classList.add('playing');
+  frame.addEventListener('load', () => frame.focus());
+}
+
+document.addEventListener('click', e => {
+  const button = e.target.closest('.game-start');
+  if (button) startGame(button.closest('.game'));
+});
+
+
+/* ---------- Galleries: even rows, nothing cropped ----------
+   Every image keeps its own shape. Images are grouped into rows that fill
+   the full width, and every image in a row gets the same height.        */
+function layoutGallery(gallery) {
+  const width = gallery.clientWidth;
+  if (!width) return;
+  const figures = [...gallery.children];
+  const gap = 12;
+  const ratioOf = f => parseFloat(f.dataset.ratio) || 4 / 3;
+
+  if (figures.length === 1) {               // one image: as large as fits
+    const f = figures[0], r = ratioOf(f);
+    const h = Math.min(width / r, 620);
+    f.style.width = `${h * r}px`;
+    f.style.height = `${h}px`;
+    return;
+  }
+
+  // Try every way of splitting the images into rows (in order) and keep the
+  // one whose row heights are closest to the ideal height overall.
+  const target = Math.max(150, Math.min(280, width * 0.36));
+  const n = figures.length;
+  const ratios = figures.map(ratioOf);
+  const rowHeight = (from, to) => {
+    let sum = 0;
+    for (let k = from; k < to; k++) sum += ratios[k];
+    return (width - gap * (to - from - 1)) / sum;
+  };
+  const best = [0], cut = [0];
+  for (let i = 1; i <= n; i++) {
+    best[i] = Infinity;
+    for (let j = 0; j < i; j++) {
+      const cost = best[j] + (rowHeight(j, i) - target) ** 2;
+      if (cost < best[i]) { best[i] = cost; cut[i] = j; }
+    }
+  }
+  const rows = [];
+  for (let i = n; i > 0; i = cut[i]) rows.unshift([cut[i], i]);
+
+  rows.forEach(([from, to]) => {
+    const h = rowHeight(from, to);
+    for (let k = from; k < to; k++) {
+      figures[k].style.width = `${Math.floor(h * ratios[k] * 100) / 100}px`;
+      figures[k].style.height = `${Math.floor(h)}px`;
+    }
+  });
+}
+
+function layoutGalleries() {
+  document.querySelectorAll('.gallery').forEach(layoutGallery);
+}
+
+function watchGalleries() {
+  document.querySelectorAll('.gallery').forEach(gallery => {
+    gallery.querySelectorAll('figure').forEach(f => {
+      const img = f.querySelector('img');
+      const video = f.querySelector('video');
+      const measure = () => {
+        const w = img ? img.naturalWidth : video.videoWidth;
+        const h = img ? img.naturalHeight : video.videoHeight;
+        if (w && h) { f.dataset.ratio = w / h; layoutGallery(gallery); }
+      };
+      if (img) { if (img.complete) measure(); img.addEventListener('load', measure); }
+      if (video) { if (video.readyState >= 1) measure(); video.addEventListener('loadedmetadata', measure); }
+    });
+    // relayout when the column changes width (window resize, phone rotation)
+    let last = 0;
+    new ResizeObserver(() => {
+      if (gallery.clientWidth !== last) { last = gallery.clientWidth; layoutGallery(gallery); }
+    }).observe(gallery);
+  });
+}
+
+
+/* ---------- Lightbox: click an image to see it big ---------- */
+function setupLightbox() {
+  const box = document.createElement('dialog');
+  box.className = 'lightbox';
+  box.setAttribute('aria-label', 'Image viewer');
+  box.innerHTML = `
+    <button type="button" class="lb-close" aria-label="Close">×</button>
+    <button type="button" class="lb-prev" aria-label="Previous image">‹</button>
+    <figure><img alt=""><figcaption></figcaption></figure>
+    <button type="button" class="lb-next" aria-label="Next image">›</button>`;
+  document.body.appendChild(box);
+
+  const img = box.querySelector('img');
+  const caption = box.querySelector('figcaption');
+  let list = [], index = 0, title = '';
+
+  const show = i => {
+    index = (i + list.length) % list.length;
+    img.src = list[index].currentSrc || list[index].src;
+    img.alt = list[index].alt;
+    caption.textContent = list.length > 1 ? `${title} · ${index + 1} / ${list.length}` : title;
+    box.classList.toggle('single', list.length < 2);
+  };
+
+  const open = clicked => {
+    const gallery = clicked.closest('.gallery');
+    list = [...gallery.querySelectorAll('figure:not(.missing) img')];
+    title = clicked.closest('.project')?.querySelector('h3')?.textContent || '';
+    show(list.indexOf(clicked));
+    box.showModal();
+  };
+
+  document.addEventListener('click', e => {
+    const clicked = e.target.closest('.gallery figure:not(.missing) img');
+    if (clicked) open(clicked);
+  });
+  document.addEventListener('keydown', e => {
+    const focused = document.activeElement;
+    if ((e.key === 'Enter' || e.key === ' ') && focused?.matches('.gallery figure:not(.missing) img')) {
+      e.preventDefault();
+      open(focused);
+    }
+  });
+
+  box.querySelector('.lb-close').addEventListener('click', () => box.close());
+  box.querySelector('.lb-prev').addEventListener('click', () => show(index - 1));
+  box.querySelector('.lb-next').addEventListener('click', () => show(index + 1));
+  box.addEventListener('click', e => {           // click outside the image closes it
+    if (e.target === box || e.target.tagName === 'FIGURE') box.close();
+  });
+  box.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') show(index - 1);
+    if (e.key === 'ArrowRight') show(index + 1);
+  });
+  let startX = null;                             // swipe on phones
+  box.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  box.addEventListener('touchend', e => {
+    if (startX === null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) show(index + (dx < 0 ? 1 : -1));
+    startX = null;
+  });
 }
 
 function visibleProjects() {
@@ -196,6 +368,8 @@ renderFeatured();
 renderLists();
 renderProjects();
 watchMissingImages();
+watchGalleries();
+setupLightbox();
 
 // Jump to #project if the address had one (the page was empty when the browser tried)
 if (location.hash) {

@@ -329,29 +329,145 @@ figure.missing::after {
 /* Everything visual for a project (images, videos, embeds) sits in one column */
 .project-media { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 
+/* Galleries: render.js sizes every image so rows fill the width and nothing
+   is cropped. Before that runs, images sit in simple 240px-tall rows.   */
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
 }
-.gallery-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.gallery-1 { grid-template-columns: minmax(0, 1fr); max-width: 520px; }
-
 .gallery figure {
+  position: relative;
   margin: 0;
+  height: 240px;
   border-radius: 12px;
   overflow: hidden;
   background: var(--card);
+  flex: none;
 }
-.gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
-.gallery-1 img { aspect-ratio: auto; }   /* posters and comics keep their own shape */
+.gallery img,
+.gallery video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* rounding only: the box already has the image's shape */
+}
+.gallery img { cursor: zoom-in; transition: transform .5s cubic-bezier(.2, .7, .2, 1), filter .3s; }
+.gallery figure:hover img { transform: scale(1.025); }
+.gallery img:focus-visible { outline: none; }
+.gallery figure:has(img:focus-visible) { outline: 2px solid var(--black); outline-offset: 3px; }
+.gallery video { background: #000; object-fit: contain; }
+.gallery figure.missing { aspect-ratio: 4 / 3; min-height: 0; }
 
-/* fit: "whole" in content.js: images keep their own shape, nothing is cropped */
-.gallery-whole { align-items: start; }
-.gallery-whole img { aspect-ratio: auto; object-fit: contain; }
+/* Playable games (play: in content.js) */
+.game {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--black);
+}
+.game-cover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 20px;
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+}
+.game-cover::before {          /* darkens the still so the button stands out */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 11, .45);
+  transition: background .3s;
+}
+.game-cover:hover::before { background: rgba(10, 10, 11, .3); }
+.game-start, .game-hint { position: relative; }
+.game-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  background: #FFFFFF;
+  color: var(--black);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .25);
+}
+.game-start:hover { background: #FFFFFF; color: var(--black); transform: translateY(-1px); }
+.game-start svg { width: 18px; height: 18px; fill: currentColor; }
+.game-hint {
+  margin: 0;
+  max-width: 44ch;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #FFFFFF;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .6);
+}
+.game iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
 
-.gallery video { display: block; width: 100%; background: #000; }
-.gallery figure.missing { min-height: 0; aspect-ratio: 4 / 3; }
+/* Lightbox */
+.lightbox {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #FFFFFF;
+}
+.lightbox[open] { display: grid; grid-template-columns: 64px minmax(0, 1fr) 64px; align-items: center; }
+.lightbox::backdrop { background: rgba(10, 10, 11, .92); }
+html:has(.lightbox[open]) { overflow: hidden; }
+.lightbox figure {
+  margin: 0;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px 0;
+  box-sizing: border-box;
+}
+.lightbox img {
+  max-width: 100%;
+  max-height: calc(100dvh - 90px);
+  object-fit: contain;
+  border-radius: 8px;
+}
+.lightbox figcaption { font-family: var(--mono); font-size: 13px; color: #B9BAC0; }
+.lightbox button {
+  width: 48px;
+  height: 48px;
+  justify-self: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .1);
+  color: #FFFFFF;
+  font: 300 30px/1 var(--font);
+  cursor: pointer;
+  transition: background .2s;
+}
+.lightbox button:hover { background: rgba(255, 255, 255, .22); }
+.lightbox .lb-close { position: fixed; top: 16px; right: 16px; z-index: 1; }
+.lightbox.single .lb-prev,
+.lightbox.single .lb-next { visibility: hidden; }
 
 .embeds { display: flex; flex-direction: column; gap: 12px; }
 .embeds iframe {
@@ -438,6 +554,11 @@ figure.missing::after {
 @media (max-width: 560px) {
   .wrap { padding-inline: 16px; }
   .site-header { padding-block: 20px 40px; }
-  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lightbox[open] { grid-template-columns: 44px minmax(0, 1fr) 44px; }
+  .lightbox button { width: 38px; height: 38px; font-size: 24px; }
+  .game-hint { display: none; }
   .portrait { height: 300px; }
 }
+
+/* Focus ring inside the dark image viewer */
+.lightbox :focus-visible { outline-color: #FFFFFF; }
