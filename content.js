@@ -302,7 +302,7 @@ const PROJECTS = [
     fit: "whole",
   },
   {
-    id: "archive",
+    id: "older",
     title: "Older works",
     list: "Art",
     tag: "Archive",
