@@ -236,16 +236,16 @@ const PROJECTS = [
     title: "Target Hit",
     list: "Electronics",
     tag: "Arduino",
-    eyebrow: "Module 2 · Physical computing",
-    text: "A two-player game with physical controls. Player one hides five targets on the screen, steering with a potentiometer (left and right) and a light sensor (up and down). Player two then races to hit them all with the same controls, and the fastest times go on a high-score list. The game is written in Processing and reads the sensors from an Arduino over serial. You can try it below with the keyboard, or plug in the Arduino and connect it in Chrome.",
+    eyebrow: "Module 2 · Physical computing · with Jack Rengelink",
+    text: "A two-player reaction game made with Jack Rengelink. One player places five targets, the other steers into them as fast as possible, then you swap. The controller is a potentiometer for left and right and a light sensor for up and down: the closer your finger gets to the sensor, the higher you go. A red LED is on while targets are being placed and a green one while they're being hit, and a buzzer plays C, E, G, C, E as each target goes down. The fastest total time is saved as the highscore. The game is written in Processing and talks to an Arduino over serial. Try it below with your mouse, or plug in the Arduino and connect it in Chrome.",
     images: 1,
     play: {
       src: "play/target.html",
       ratio: "10 / 7",
       poster: "target-game-play.jpg",
-      hint: "Keyboard needed. Player 1: WASD and click to place targets. Player 2: IJKL and hold F to hit.",
+      hint: "Two players take turns. Click to place five targets, then steer into them with the mouse.",
     },
-    fit: "whole",
+    link: { label: "Arduino code ↗", url: "https://github.com/reanu0/reanu0.github.io/blob/main/code/target_hit_arduino/target_hit_arduino.ino" },
   },
 
   /* ----- Code ----- */
