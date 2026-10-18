@@ -1,7 +1,6 @@
 # Reanu's portfolio: how to update it
 
-The page is built from one file: **content.js**. You never have to touch the
-layout to add work.
+The page is built from one file: **content.js**. 
 
 ```
 portfolio/
@@ -47,13 +46,6 @@ Every field is explained in the comment above PROJECTS.
 
 Usually it's a small typo in content.js: a missing comma after `}`, or a missing `"`.
 Open the browser console (F12, then Console). It shows the line number of the mistake.
-
-## Put it online
-
-- **Netlify Drop:** go to app.netlify.com/drop and drag the whole folder onto the page.
-- **GitHub Pages:** upload the folder to a GitHub repository and turn on Pages in its settings.
-
-After a change, upload the folder again (Netlify) or push the changed files (GitHub).
 
 ## Contact form
 
