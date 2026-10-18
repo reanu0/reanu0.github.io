@@ -281,6 +281,8 @@ function watchGalleries() {
       if (gallery.clientWidth !== last) { last = gallery.clientWidth; layoutGallery(gallery); }
     }).observe(gallery);
   });
+  layoutGalleries();                                   // first pass right away
+  window.addEventListener('load', layoutGalleries);    // and again once fonts and images settle
 }
 
 
