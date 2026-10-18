@@ -60,3 +60,5 @@ After a change, upload the folder again (Netlify) or push the changed files (Git
 ## Contact form
 
 Make a free form at formspree.io and replace `YOUR_FORM_ID` in index.html.
+
+**Changes not showing up?** Browsers keep the old style.css, content.js and render.js for a few minutes. To make everyone get the new version immediately, raise the number after `?v=` for those files at the top and bottom of index.html (for example `?v=2` → `?v=3`).
