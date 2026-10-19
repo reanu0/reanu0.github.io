@@ -100,16 +100,10 @@
       </div>
 
       <div class="field">
-        <label for="embeds">itch.io embed links <small>(optional, one per line)</small></label>
-        <textarea id="embeds" rows="2" placeholder="https://itch.io/embed/1234567"></textarea>
-      </div>
-
-      <div class="field">
         <label for="videos">Video files <small>(optional, one per line, put them in the images folder)</small></label>
         <textarea id="videos" rows="2" placeholder="demo.mp4"></textarea>
       </div>
 
-      <label class="check"><input id="whole" type="checkbox"> Show images uncropped (posters, comics, tall photos)</label>
       <label class="check"><input id="hidden" type="checkbox"> Hide this project for now</label>
     </form>
   </section>
@@ -171,13 +165,10 @@
 
     const videos = lines($('videos').value);
     if (videos.length) out.push(`    videos: [${videos.map(str).join(', ')}],`);
-    if ($('whole').checked) out.push('    fit: "whole",');
 
     if ($('linkUrl').value.trim()) {
       out.push(`    link: { label: ${str($('linkLabel').value.trim() || 'Open ↗')}, url: ${str($('linkUrl').value.trim())} },`);
     }
-    const embeds = lines($('embeds').value);
-    if (embeds.length) out.push(`    embeds: [${embeds.map(str).join(', ')}],`);
     if ($('hidden').checked) out.push('    hidden: true,');
     out.push('  },');
     $('result').value = out.join('\n');

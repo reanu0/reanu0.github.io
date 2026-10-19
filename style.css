@@ -326,7 +326,7 @@ figure.missing::after {
 .project-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
 .project-buttons .pill { padding: 12px 20px; font-size: 15px; }
 
-/* Everything visual for a project (images, videos, embeds) sits in one column */
+/* Everything visual for a project (game, images, videos) sits in one column */
 .project-media { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 
 /* Galleries: render.js sizes every image so rows fill the width and nothing
@@ -475,15 +475,6 @@ html:has(.lightbox[open]) { overflow: hidden; }
 .lightbox.single .lb-prev,
 .lightbox.single .lb-next { visibility: hidden; }
 
-.embeds { display: flex; flex-direction: column; gap: 12px; }
-.embeds iframe {
-  display: block;
-  width: 552px;
-  max-width: 100%;
-  height: 167px;
-  border: 0;
-  border-radius: 12px;
-}
 
 
 /* ---------- 9. Contact ---------- */

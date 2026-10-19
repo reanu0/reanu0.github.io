@@ -105,14 +105,11 @@ const LIST_ORDER = ["Design", "3D", "Electronics", "Code", "Art"];
    images:      a number, e.g. 4, means images/<id>-1.jpg to images/<id>-4.jpg
                 or a list of file names, e.g. ["poster-1.jpg", "poster-2.png"]
    videos:      (optional) video files in the images folder, e.g. ["demo.mp4"]
-   fit:         (no longer needed) images are never cropped now; they are
-                arranged in neat rows automatically. Click one to see it big.
    play:        (optional) a game that runs on the page, from the play folder, e.g.
                 { src: "play/ducks.html", ratio: "4 / 3", poster: "creature-play.jpg",
                   hint: "Click a duck" }   ratio = the sketch's width / height
    link:        (optional) a button, e.g. { label: "Read it ↗", url: "https://..." }
    links:       (optional) several buttons, e.g. [{ label: "Play ↗", url: "https://..." }, …]
-   embeds:      (optional) itch.io embed links, e.g. ["https://itch.io/embed/4233002"]
    hidden:      (optional) true hides the project without deleting it        */
 
 const PROJECTS = [
@@ -142,7 +139,6 @@ const PROJECTS = [
     text: "Our group's installation for the Creative Technology art exhibition at Black Brick Underground in Enschede, on 2 June 2026. The poster asked visitors whether they would look beyond themselves or within themselves. We split the room in two with draped fabric, with a separate entrance and exit and a camera inside. Made with Liam Townsley, Martina Germano, Lapo D'Auria, Elena Andreucci and Teo Peeters.",
     images: 5,
     videos: ["exhibition-1.mp4", "exhibition-2.mp4"],
-    fit: "whole",
   },
   {
     id: "ai-poster",
@@ -152,7 +148,6 @@ const PROJECTS = [
     eyebrow: "Module 3 · Technology and Society",
     text: "A poster about spotting AI-generated images and video. It shows that the usual tricks, like checking hands or listening for odd audio, no longer work, and that reading, verifying sources and going outside are better habits.",
     images: 1,
-    fit: "whole",
   },
   {
     id: "poster",
@@ -162,7 +157,6 @@ const PROJECTS = [
     eyebrow: "Module 1 · Design for Behavioural Change",
     text: "Coming from Singapore, I was surprised by how much litter I sometimes see on the streets in the Netherlands. For this assignment I combined humour with a strong message to encourage people to be cleaner.",
     images: 1,
-    fit: "whole",
   },
 
   /* ----- 3D ----- */
@@ -218,7 +212,6 @@ const PROJECTS = [
     eyebrow: "Electronics",
     text: "I made a PCB design guide for peers within the course. I hope to eventually turn it into a full workshop within the DIY committee.",
     images: ["pcb-1.png"],
-    fit: "whole",
     link: { label: "Read the guide ↗", url: "https://docs.google.com/document/d/1zooBcqyrptsdPBeCEDaPWu8iJ5M0LH_fq9H4dy7rSPY/edit?usp=sharing" },
   },
   {
@@ -229,7 +222,6 @@ const PROJECTS = [
     eyebrow: "Module 2 · Smart Environments",
     text: "A concept for a public bench that encourages people to sort their waste, with sortable bins and a fill meter, a screen with a speaker, and a pressure sensor under the seat. I programmed the bin sensor on an Arduino: an ultrasonic sensor notices new trash, waits for it to settle, then reports how full the bin is as a percentage.",
     images: 4,
-    fit: "whole",
   },
   {
     id: "target-game",
@@ -263,7 +255,6 @@ const PROJECTS = [
       poster: "axe-throw-play.jpg",
       hint: "Drag away from the catapult and let go to throw. Space switches the weather.",
     },
-    fit: "whole",
   },
   {
     id: "bakery",
@@ -279,7 +270,6 @@ const PROJECTS = [
       poster: "bakery-play.jpg",
       hint: "Drag each loaf into the basket, or into the bin. Watch out for ducks.",
     },
-    fit: "whole",
   },
   {
     id: "creature",
@@ -307,7 +297,6 @@ const PROJECTS = [
     eyebrow: "Illustration",
     text: "A short Japanese-style manga about a girl's strange first day, told in four-panel (4-koma) chapters, plus a character turnaround sheet. Read each page from right to left, top to bottom.",
     images: 4,
-    fit: "whole",
   },
   {
     id: "prodaccie",
@@ -317,7 +306,6 @@ const PROJECTS = [
     eyebrow: "Illustration",
     text: "",
     images: 2,
-    fit: "whole",
   },
   {
     id: "paintings",
@@ -327,7 +315,6 @@ const PROJECTS = [
     eyebrow: "Illustration",
     text: "",
     images: ["paintings-2.jpg", "paintings-1.jpg", "paintings-3.jpg", "paintings-4.jpg", "paintings-5.jpg"],
-    fit: "whole",
   },
   {
     id: "older",
@@ -337,6 +324,5 @@ const PROJECTS = [
     eyebrow: "Archive",
     text: "Paintings, studies, 3D hand renders and a poster.",
     images: 18,
-    fit: "whole",
   },
 ];

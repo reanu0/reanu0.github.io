@@ -154,13 +154,9 @@ function renderProjects() {
         </figure>`));
     const gallery = count ? `<div class="gallery${count === 1 ? ' gallery-1' : ''}">${items.join('')}</div>` : '';
     const game = gameBlock(p);
-    const embeds = (p.embeds || []).length
-      ? `<div class="embeds">${p.embeds.map((url, i) =>
-          `<iframe src="${esc(url)}" title="${esc(p.title)} on itch.io, ${i + 1}" width="552" height="167" loading="lazy"></iframe>`).join('')}</div>`
-      : '';
     const buttons = [p.link].concat(p.links || []).filter(Boolean);
     if (p.play && p.play.src) buttons.push({ label: 'Play full screen ↗', url: p.play.src });
-    const media = (game || gallery || embeds) ? `<div class="project-media">${game}${gallery}${embeds}</div>` : '';
+    const media = (game || gallery) ? `<div class="project-media">${game}${gallery}</div>` : '';
     return `
       <article id="${esc(p.id)}" class="project">
         <div class="project-text">

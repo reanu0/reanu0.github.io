@@ -37,7 +37,7 @@ Every field is explained in the comment above PROJECTS.
 
 - **Hide a project without deleting it:** add `hidden: true,` to its block.
 - **Sharper images when enlarged:** the gallery uses the normal images (about 1800 px wide). If you also put a bigger copy with the same name in `images/full/` (up to about 3600 px), the viewer shows that one when someone clicks the image. Illustrations benefit most.
-- **Image layout is automatic:** images are never cropped. They're arranged in rows that fill the width, and clicking one opens it big (arrow keys or swipe to browse). The old `fit: "whole"` setting is no longer needed.
+- **Image layout is automatic:** images are never cropped. They're arranged in rows that fill the width, and clicking one opens it big (arrow keys or swipe to browse).
 - **A playable game:** put the game page in `play/` and add `play: { src: "play/my-game.html", ratio: "4 / 3", poster: "my-game-play.jpg", hint: "How to play" },`. The ratio is the sketch's width / height (`size(800, 600)` is `"4 / 3"`). The game only loads when someone presses Play. To port another Processing sketch, copy one of the pages in `play/`, and in the .js file turn `void setup()` into `function setup()`, `size(w, h)` into `createCanvas(w, h).parent('stage')`, `#FF0000` into `'#FF0000'`, and use `parc()`/`arcP()` from compat.js instead of `arc()` so arcs look the same as in Processing.
 - **Videos:** put .mp4 files in `images/` and add `videos: ["my-video.mp4"],`.
 - **Change the order:** move blocks up or down in the list.
