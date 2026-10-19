@@ -453,6 +453,9 @@ class SerialManager {
       this.writer = port.writable.getWriter();
       this.connected = true;
       ledState = -1; // send the LED state again
+      // WEB: an Arduino Uno restarts for ~2 s when a computer connects, and
+      // misses anything sent meanwhile, so send the LED state once more after that
+      setTimeout(() => { ledState = -1; }, 2500);
       button.textContent = 'Arduino connected';
       button.disabled = true;
       const reader = port.readable.pipeThrough(new TextDecoderStream()).getReader();
