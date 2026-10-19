@@ -7,8 +7,9 @@
   One player places 5 targets, the other steers into them as fast as possible,
   then they swap. The controller is a potentiometer (x) and an LDR (y).
 
-  WEB: without an Arduino, the mouse stands in for the controller
-       (left/right = potentiometer, up/down = LDR), and the buzzer notes play
+  WEB: without an Arduino, the keyboard stands in for the controller, like the
+       original debug mode: player 1 steers with WASD, player 2 with IJKL,
+       P (or Enter) places a target at your cursor, and the buzzer notes play
        through the speakers. In Chrome or Edge, "Connect Arduino" uses the real
        controller, LEDs and buzzer with the Arduino code from the project.
 */
@@ -56,6 +57,11 @@ let highscore = Number.MAX_VALUE;
 let newHighscore = false;
 let highscorePlayer = 0;
 const highscoreFile = "target-hit-highscore"; // WEB: kept in this browser instead of highscore.txt
+
+// WEB: keyboard controller, one virtual knob + light sensor per player
+const keysPressed = {};
+const keyboardPos = { 1: { x: 500, y: 370 }, 2: { x: 500, y: 370 } };
+const keySpeed = 5; // pixels per frame, as in the original debug mode
 
 //Buzz / Serial
 let serialManager;
@@ -111,11 +117,8 @@ function draw() {
 
 //All the inputs
 function updateInput() {
-  // WEB: no Arduino connected -> the mouse acts as the potentiometer and LDR
-  if (!serialManager.connected) {
-    serialManager.pot = constrain(map(mouseX, 0, width, 0, 1023), 0, 1023);
-    serialManager.ldr = constrain(map(mouseY, 40, height, 0, 1023), 0, 1023);
-  }
+  // WEB: no Arduino connected -> the keyboard turns the "knob" and covers the "LDR"
+  if (!serialManager.connected) updateKeyboardController();
 
   const x = map(serialManager.pot, 0, 1023, 0, width);
   const y = map(serialManager.ldr, 0, 1023, 40, height);
@@ -165,13 +168,60 @@ function pressSpace() {
   else if (gameState === stateGameEnd) resetGame();
 }
 
+// WEB: whose turn it is to steer right now
+function activePlayer() {
+  if (gameState === statePlace) return placer;
+  if (gameState === stateHit) return hitter;
+  return 0;
+}
+
+// WEB: WASD moves player 1, IJKL moves player 2 (only on their own turn).
+// The position is turned back into knob/LDR readings, so the game itself
+// reads the keyboard exactly like it reads the Arduino.
+function updateKeyboardController() {
+  const id = activePlayer();
+  if (!id) return;
+  const keys = id === player1Id ? ['w', 'a', 's', 'd'] : ['i', 'j', 'k', 'l'];
+  const pos = keyboardPos[id];
+  if (keysPressed[keys[0]]) pos.y -= keySpeed;
+  if (keysPressed[keys[2]]) pos.y += keySpeed;
+  if (keysPressed[keys[1]]) pos.x -= keySpeed;
+  if (keysPressed[keys[3]]) pos.x += keySpeed;
+  pos.x = constrain(pos.x, 0, width);
+  pos.y = constrain(pos.y, 40, height);
+  serialManager.pot = map(pos.x, 0, width, 0, 1023);
+  serialManager.ldr = map(pos.y, 40, height, 0, 1023);
+}
+
+function keyName() {
+  return key.length === 1 ? key.toLowerCase() : key;
+}
+
 function keyPressed() {
-  if (key === ' ') {
-    buzzer.unlock();
+  const k = keyName();
+  keysPressed[k] = true;
+  buzzer.unlock();
+  if (k === ' ') {
     pressSpace();
     return false; // WEB: keep the space bar from scrolling the page
   }
+  // WEB: P or Enter places a target where the placing player's cursor is
+  if ((k === 'p' || keyCode === ENTER) && gameState === statePlace && targetsPlaced < targetsPerPhase) {
+    const tx = (placer === player1Id) ? p1x : p2x;
+    const ty = (placer === player1Id) ? p1y : p2y;
+    targets.push(new Target(tx, ty));
+    targetsPlaced++;
+  }
+  return false;
 }
+
+function keyReleased() {
+  keysPressed[keyName()] = false;
+  return false;
+}
+
+// WEB: let go of all keys if the window loses focus, so nobody keeps drifting
+window.addEventListener('blur', () => { for (const k in keysPressed) keysPressed[k] = false; });
 
 //Simple clicking stuff for target placing
 function mousePressed(e) {
@@ -181,7 +231,7 @@ function mousePressed(e) {
     targets.push(new Target(mouseX, mouseY));
     targetsPlaced++;
   } else if (gameState !== stateHit) {
-    pressSpace(); // WEB: a click or tap also works as SPACE, so it plays on phones
+    pressSpace(); // WEB: a click also works as SPACE
   }
   return false;
 }
@@ -315,11 +365,14 @@ function drawWebHint() {
   textSize(13);
   textAlign(CENTER, CENTER);
   let hint;
-  if (gameState === statePlace) hint = "Click to place the targets, then press SPACE (or click)";
+  const keys = activePlayer() === player2Id ? "IJKL" : "WASD";
+  if (gameState === statePlace) hint = serialManager.connected
+    ? "Steer with the knob and the light sensor, click to place the targets, then SPACE"
+    : "Move with " + keys + ", press P to place a target, then SPACE";
   else if (gameState === stateHit) hint = serialManager.connected
     ? "Steer with the knob and the light sensor"
-    : "Steer with the mouse: left and right is the knob, up and down is the light sensor";
-  else hint = "SPACE or click to continue";
+    : "Steer into the targets with " + keys;
+  else hint = "Press SPACE to continue";
   text(hint, width / 2, height - 16);
   pop();
 }
