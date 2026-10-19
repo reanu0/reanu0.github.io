@@ -4,3 +4,6 @@ Any image that is missing shows up on the page as a grey box with its file name.
 
 All images were collected from your OneDrive, converted to JPEG and
 resized to at most 1800 px wide (1400 px for the older works).
+
+images/full/ holds larger copies (up to 3600 px) of some images. They are only
+loaded when someone clicks an image to see it big.

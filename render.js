@@ -305,8 +305,14 @@ function setupLightbox() {
 
   const show = i => {
     index = (i + list.length) % list.length;
-    img.src = list[index].currentSrc || list[index].src;
-    img.alt = list[index].alt;
+    const thumb = list[index];
+    img.src = thumb.currentSrc || thumb.src;
+    img.alt = thumb.alt;
+    // If images/full/ has a bigger copy with the same name, swap it in once it has loaded
+    const wanted = index;
+    const big = new Image();
+    big.onload = () => { if (index === wanted && box.open) img.src = big.src; };
+    big.src = thumb.getAttribute('src').replace(/^images\//, 'images/full/');
     caption.textContent = list.length > 1 ? `${title} · ${index + 1} / ${list.length}` : title;
     box.classList.toggle('single', list.length < 2);
   };
